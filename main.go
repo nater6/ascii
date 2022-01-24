@@ -50,6 +50,7 @@ func main() {
 	dash := strings.Index(Output, `\n`)
 	// fmt.Println(dash)
 	for i := 0; i < len(SlcOutput); i++ {
+		fmt.Println(SlcOutput[i])
 		// fmt.Println(count)
 		// count++
 		// fmt.Print(string(c))
@@ -90,8 +91,8 @@ func main() {
 			for j, s := range lttrlines {
 
 				line = j
-				runes := []rune(s)
-				if len(s) > 0 && runes[0] == SlcOutput[i] {
+				// runes := []rune(s)
+				if len(s) > 0 && s == string(SlcOutput[i]) {
 					break
 				}
 
