@@ -30,7 +30,7 @@ func main() {
 
 	// find a string in a scanned file
 
-	// // Splits on newlines by default.
+	// Splits on newlines by default.
 	ln1 := ""
 	ln2 := ""
 	ln3 := ""
@@ -41,25 +41,11 @@ func main() {
 	ln8 := ""
 
 	line := 0
-	// dash := 0
 	Output := os.Args[1]
 	SlcOutput := []rune(Output)
-	// count := 0
-	// fmt.Println(Output)
-	// if strings.Contains(Output, "\\")
 	dash := strings.Index(Output, `\n`)
-	// fmt.Println(dash)
+
 	for i := 0; i < len(SlcOutput); i++ {
-		// fmt.Println(SlcOutput[i])
-		// fmt.Println(count)
-		// count++
-		// fmt.Print(string(c))
-		// fmt.Println(i)
-
-		// 	break
-		// }
-		// dash++
-
 		if i == dash && dash >= 0 {
 			if ln1 != "" && ln2 != "" && ln3 != "" && ln4 != "" && ln5 != "" && ln6 != "" && ln7 != "" && ln8 != "" {
 				fmt.Println(ln1)
@@ -83,15 +69,10 @@ func main() {
 			ln7 = ""
 			ln8 = ""
 			dash = dash + strings.Index(Output[dash+1:], `\n`) + 1
-			// fmt.Println(dash)
 			i++
-			// fmt.Println(i)
-
 		} else {
 			for j, s := range lttrlines {
-
 				line = j
-				// runes := []rune(s)
 				if len(s) > 0 && s == string(SlcOutput[i]) {
 					break
 				}
@@ -144,23 +125,10 @@ func main() {
 				ln8 = ""
 			}
 		}
-
-		// if c == ' ' {
-		// 	ln1 = ln1 + "      "
-		// 	ln2 = ln2 + "      "
-		// 	ln3 = ln3 + "      "
-		// 	ln4 = ln4 + "      "
-		// 	ln5 = ln5 + "      "
-		// 	ln6 = ln6 + "      "
-		// 	ln7 = ln7 + "      "
-		// 	ln8 = ln8 + "      "
-		// }
 	}
-
 	if err := scanner.Err(); err != nil {
 		fmt.Println(err)
-		// 	// Handle the error
+		// Handle the error
 	}
-
 	file.Close()
 }
