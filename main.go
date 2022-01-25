@@ -50,7 +50,7 @@ func main() {
 	dash := strings.Index(Output, `\n`)
 	// fmt.Println(dash)
 	for i := 0; i < len(SlcOutput); i++ {
-		fmt.Println(SlcOutput[i])
+		// fmt.Println(SlcOutput[i])
 		// fmt.Println(count)
 		// count++
 		// fmt.Print(string(c))
