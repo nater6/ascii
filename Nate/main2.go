@@ -105,6 +105,7 @@ func main() {
 	fmt.Println(ln7)
 	fmt.Println(ln8)
 	}
+	text.Close()
 
 }
 
