@@ -28,7 +28,7 @@ func Createmap(slice []string) map[int][]string {
 
 func Printascii(mapascii map[int][]string, word string) string {
 	toprint := ""
-	for i := 1; i <= 7; i++ {
+	for i := 1; i <= 8; i++ {
 		for _, c := range word {
 			toprint += mapascii[int(c)][i]
 		}

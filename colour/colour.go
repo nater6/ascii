@@ -6,35 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"runtime"
-	"strings"
 )
-
-var (
-	Reset  = "\033[0m"
-	Red    = "\033[31m"
-	Green  = "\033[32m"
-	Yellow = "\033[33m"
-	Blue   = "\033[34m"
-	Purple = "\033[35m"
-	Cyan   = "\033[36m"
-	Gray   = "\033[37m"
-	White  = "\033[97m"
-)
-
-func init() {
-	if runtime.GOOS == "windows" {
-		Reset = ""
-		Red = ""
-		Green = ""
-		Yellow = ""
-		Blue = ""
-		Purple = ""
-		Cyan = ""
-		Gray = ""
-		White = ""
-	}
-}
 
 func main() {
 	file, err := os.Open("letters.txt")
@@ -56,69 +28,74 @@ func main() {
 		fmt.Println(err)
 	}
 
-	// find a string in a scanned file
+	// new file to read
+	fmt.Println(os.Args[1][10:])
+	reverse, err := os.Open(os.Args[1][10:])
+	if err != nil {
+		fmt.Println("Usage: go run . [OPTION]")
+		fmt.Print("EX: go run . --reverse=<fileName>")
+		return
+	}
+	// file to slice of string by line
 
+	var strreverse []string
+	scanner2 := bufio.NewScanner(reverse)
+	scanner2.Split(bufio.ScanLines)
+
+	for scanner2.Scan() {
+		strreverse = append(strreverse, scanner2.Text())
+	}
+
+	if err := scanner2.Err(); err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(strreverse)
+	// loop through file
 	mapslice := ascii.Createmap(lttrlines)
 
-	// Splits on newlines by default.
+	checkascii := make([]string, 8)
+	output := ""
+	fmt.Println(len(strreverse))
 
-	ln1 := ""
-	ln2 := ""
-	ln3 := ""
-	ln4 := ""
-	ln5 := ""
-	ln6 := ""
-	ln7 := ""
-	ln8 := ""
+	for i := 0; i <= len(strreverse[0])-1; i++ {
 
-	// line := 0
-	Output := os.Args[1]
-	SlcOutput := []rune(Output)
-	dash := strings.Index(Output, `\n`)
+		for j, line := range strreverse {
+			slice := []rune(line)
+			checkascii[j] += string(slice[i])
+
+		}
+		match := true
+		for k, art := range mapslice {
+			count := 0
+			for num, slice := range art {
+				if num > 0 && slice == checkascii[count] {
+					count++
+					fmt.Println("yay")
+				} else {
+					match = false
+					break
+				}
+			}
+			if match {
+				fmt.Println("yay2")
+				output += string(rune(k))
+				checkascii = make([]string, 8)
+				break
+			}
+		}
+
+	}
+
+	// Output := os.Args[1]
 
 	// art := ascii.Condition(mapslice, Output)
-	ascii.Condition(mapslice, Output)
-	for i := range SlcOutput {
-		if i == dash && dash >= 0 {
-			if ln1 != "" && ln2 != "" && ln3 != "" && ln4 != "" && ln5 != "" && ln6 != "" && ln7 != "" && ln8 != "" {
-				fmt.Println(ln1)
-				fmt.Println(ln2)
-				fmt.Println(ln3)
-				fmt.Println(ln4)
-				fmt.Println(ln5)
-				fmt.Println(ln6)
-				fmt.Println(ln7)
-				fmt.Println(ln8)
-			} else {
-				fmt.Println()
-			}
-
-			ln1 = ""
-			ln2 = ""
-			ln3 = ""
-			ln4 = ""
-			ln5 = ""
-			ln6 = ""
-			ln7 = ""
-			ln8 = ""
-			dash = dash + strings.Index(Output[dash+1:], `\n`) + 1
-			i++
-		}
-	}
+	// ascii.Condition(mapslice, Output)
+	fmt.Println(output)
 
 	if err := scanner.Err(); err != nil {
 		fmt.Println(err)
 		// Handle the error
 	}
-
-	println(White + "This is White" + Reset)
-	println(Red + "This is Red" + Reset)
-	println(Green + "This is Green" + Reset)
-	println(Yellow + "This is Yellow" + Reset)
-	println(Blue + "This is Blue" + Reset)
-	println(Purple + "This is Purple" + Reset)
-	println(Cyan + "This is Cyan" + Reset)
-	println(Gray + "This is Gray" + Reset)
 
 	file.Close()
 }
