@@ -81,7 +81,7 @@ func main() {
 		// INPUT file to slice of string by line
 		fileart := sliceFile(reverse)
 
-		// create map of ascii art
+		// create map of ascii art file
 		mapslice := ascii.Createmap(lttrlines)
 
 		// compare input file with map of ascii art and collect index(ascii number) to ceate string
