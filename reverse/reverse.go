@@ -8,56 +8,36 @@ import (
 	"os"
 )
 
-func main() {
-	// ASCII ART file open
-	file, err := os.Open("letters.txt")
+func openFile(filename string) *os.File {
+	file, err := os.Open(filename)
 	if err != nil {
 		log.Fatalf("ERROR: %s", err)
 	}
+	return file
+}
 
-	// ASCII ART file to slice of string by line
-	var lttrlines []string
+func sliceFile(file *os.File) []string {
+	var slice []string
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
 
 	for scanner.Scan() {
-		lttrlines = append(lttrlines, scanner.Text())
+		slice = append(slice, scanner.Text())
 	}
-
 	if err := scanner.Err(); err != nil {
-		fmt.Println(err)
+		log.Fatalf("ERROR: %s", err)
 	}
+	return slice
+}
 
-	// INPUT FILE open
-	// // fmt.Println(os.Args[1][10:])
-	reverse, err := os.Open(os.Args[1][10:])
-	if err != nil {
-		fmt.Println("Usage: go run . [OPTION]")
-		fmt.Print("EX: go run . --reverse=<fileName>")
-		return
-	}
-
-	// INPUT file to slice of string by line
-	var strreverse []string
-	scanner2 := bufio.NewScanner(reverse)
-	scanner2.Split(bufio.ScanLines)
-	for scanner2.Scan() {
-		strreverse = append(strreverse, scanner2.Text())
-	}
-	if err := scanner2.Err(); err != nil {
-		fmt.Println(err)
-	}
-
-	// create map of ascii art
-	mapslice := ascii.Createmap(lttrlines)
-	runewidth := []rune(strreverse[0])
+func checkAscii(mapslice map[int][]string, fileart []string) string {
 	checkascii := make([]string, 8)
+	runewidth := []rune(fileart[0])
 	output := ""
-
 	// loop through each index of the first slice (first line) of the slices of the inpput file
 	for i := 0; i < len(runewidth); i++ {
 		// loop through each slice, which is each new line of the file
-		for j, line := range strreverse {
+		for j, line := range fileart {
 			// add in the art by vertical line
 			slice := []rune(line)
 			checkascii[j] += string(slice[i])
@@ -81,11 +61,35 @@ func main() {
 		}
 
 	}
-	fmt.Println(output)
+	return output
+}
 
-	if err := scanner.Err(); err != nil {
-		fmt.Println(err)
-		// Handle the error
+func main() {
+	// ASCII ART file open
+	file := openFile("letters.txt")
+
+	// ASCII ART file to slice of string by line
+	lttrlines := sliceFile(file)
+
+	if len(os.Args) == 1 || len(os.Args[1]) < 10 || os.Args[1][0:10] != "--reverse=" {
+		fmt.Println("Usage: go run . [OPTION]")
+		fmt.Println("EX: go run . --reverse=<fileName>")
+	} else {
+		// INPUT FILE open
+		reverse := openFile(os.Args[1][10:])
+
+		// INPUT file to slice of string by line
+		fileart := sliceFile(reverse)
+
+		// create map of ascii art
+		mapslice := ascii.Createmap(lttrlines)
+
+		// compare input file with map of ascii art and collect index(ascii number) to ceate string
+		output := checkAscii(mapslice, fileart)
+
+		// print to terminal
+		fmt.Println(output)
+
 	}
 
 	file.Close()
