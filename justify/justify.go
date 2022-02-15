@@ -22,7 +22,6 @@ func PrintStr(a string, b string, c string, d string, e string, f string, g stri
 }
 
 func main() {
-
 	file, err := os.Open(os.Args[2] + ".txt")
 	if err != nil {
 		fmt.Println("Usage: go run . [STRING] [BANNER] [OPTION]")
@@ -50,7 +49,7 @@ func main() {
 		return
 	}
 
-	//Get the align command
+	// Get the align command
 	loc := os.Args[3]
 	loc = loc[8:]
 
@@ -63,16 +62,15 @@ func main() {
 	cmd := exec.Command("stty", "size")
 	cmd.Stdin = os.Stdin
 	out, err := cmd.Output()
-
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	//Remove white spaces to get int from []byte
+	// Remove white spaces to get int from []byte
 	T := strings.Fields(strings.TrimSpace(string(out)))
 	wid := T[1]
 	w, _ := strconv.Atoi(wid)
 
-	//Strings
+	// Strings
 	ln1 := ""
 	ln2 := ""
 	ln3 := ""
@@ -82,7 +80,7 @@ func main() {
 	ln7 := ""
 	ln8 := ""
 
-	//Stirng Slices
+	// Stirng Slices
 	sln1 := []string{}
 	sln2 := []string{}
 	sln3 := []string{}
@@ -122,7 +120,6 @@ func main() {
 						RightPrinter(ln7, w)
 						RightPrinter(ln8, w)
 					}
-
 				} else {
 					fmt.Println()
 				}
@@ -141,6 +138,7 @@ func main() {
 			} else {
 				for j, s := range lttrlines {
 					line = j
+
 					if len(s) > 0 && s == string(SlcOutput[i]) {
 						break
 					}
@@ -408,13 +406,12 @@ func CenterPrinter(a string, w int) {
 	x := w - length
 	x /= 2
 	fmt.Println(strings.Repeat(" ", x) + a)
-
 }
 
 func RightPrinter(a string, w int) {
 	length := len(a)
 	x := w - length
-	//Works with print but not println
+	// Works with print but not println
 	fmt.Print(strings.Repeat(" ", x) + a)
 }
 
@@ -425,6 +422,7 @@ func Printer(a []string, w int) {
 	}
 	width := w - length
 	width = width / (len(a) - 1)
+	fmt.Print(" ")
 	for i, c := range a {
 		if i == len(a)-1 {
 			fmt.Print(c)
@@ -432,5 +430,4 @@ func Printer(a []string, w int) {
 			fmt.Print(c + strings.Repeat(" ", width))
 		}
 	}
-
 }
